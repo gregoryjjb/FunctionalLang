@@ -254,17 +254,36 @@ countSubstringsRecursive("is", "Mississippi")
 countSubstringsRecursive("ham", "Ham ham hamham haam")
 
 // PROBLEM 8
-def evaluate(e: String): Double = {
+def eval(e: String): Double = {
 
   val strs = e.replaceAll("\\s+", "").split("[+]")
 
-  // If I uncomment this the function stops working completely
-  //if(strs.length <= 1) {
-  //  throw new IllegalArgumentException("Missing operator")
-  //}
+  if(strs.length <= 1) {
+    throw new IllegalArgumentException("Missing operator")
+  }
 
   strs.map(s => s.toDouble).sum
 }
 
-evaluate("1 + 2")
-evaluate("5 + 3.2")
+eval("1 + 2")
+eval("5 + 3.2")
+
+// PROBLEM 9
+def eval2(e: String): Double = {
+  val cleaned = e
+    .replaceAll("\\s+", "")
+    .replaceAll("[+]", " + ")
+    .replaceAll("[*]", " * ")
+    .split("\\s+")
+
+  if(cleaned.length != 3) throw new IllegalArgumentException("Missing or too many operators")
+
+  cleaned(1) match {
+    case "+" => cleaned(0).toDouble + cleaned(2).toDouble
+    case "*" => cleaned(0).toDouble * cleaned(2).toDouble
+    case _ => throw new IllegalArgumentException("Invalid operator")
+  }
+}
+
+eval2("0.5 + 10")
+eval2("0.5 * 10")
