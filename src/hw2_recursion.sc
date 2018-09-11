@@ -1,18 +1,21 @@
-def inc(n: Int):Int = n + 1
-def dec(n: Int):Int = n - 1
-def isZero(n: Int):Boolean = n == 0
+// Gregory Brisebois
+// CS152 Assignment 2
+
+def inc(n: Int): Int = n + 1
+def dec(n: Int): Int = n - 1
+def isZero(n: Int): Boolean = n == 0
 
 // PROBLEM 1
 def add(n: Int, m: Int): Int = {
-  if(isZero(m)) n
-  else inc(addTail(n, dec(m)))
+  if (isZero(m)) n
+  else inc(add(n, dec(m)))
 }
 
 add(0, 5)
 add(7, 2)
 
 def addTail(n: Int, m: Int): Int = {
-  if(isZero(m)) n
+  if (isZero(m)) n
   else add(inc(n), dec(m))
 }
 
@@ -21,7 +24,7 @@ addTail(7, 2)
 
 // PROBLEM 2
 def mul(n: Int, m: Int): Int = {
-  if(isZero(m) || isZero(n)) 0
+  if (isZero(m) || isZero(n)) 0
   else add(n, mul(n, dec(m)))
 }
 
@@ -29,16 +32,19 @@ mul(0, 3)
 mul(4, 5)
 
 def mulTail(n: Int, m: Int): Int = {
-  if(isZero(m) || isZero(n)) 0
-  else mul(addTail(n, n), dec(m))
+  def helper(t: Int, a: Int, i: Int): Int = {
+    if(isZero(a) || isZero(i)) t
+    else helper(addTail(t, a), a, dec(i))
+  }
+  helper(0, n, m)
 }
 
-mul(0, 3)
-mul(4, 5)
+mulTail(0, 3)
+mulTail(4, 5)
 
 // PROBLEM 3
 def exp2(m: Int): Int = {
-  if(isZero(m)) 1
+  if (isZero(m)) 1
   else mul(2, exp2(dec(m)))
 }
 
@@ -48,7 +54,7 @@ exp2(8)
 
 def exp2Tail(m: Int): Int = {
   def helper(e: Int, n: Int): Int = {
-    if(isZero(e)) n
+    if (isZero(e)) n
     else helper(dec(e), mulTail(n, 2))
   }
 
@@ -61,7 +67,7 @@ exp2Tail(8)
 
 // PROBLEM 4
 def hyperExp(n: Int): Int = {
-  if(isZero(n)) 1
+  if (isZero(n)) 1
   else exp2(hyperExp(dec(n)))
 }
 
@@ -72,7 +78,7 @@ hyperExp(3)
 
 def hyperExpTail(n: Int): Int = {
   def helper(e: Int, n: Int): Int = {
-    if(isZero(e)) n
+    if (isZero(e)) n
     else helper(dec(e), exp2Tail(n))
   }
 
@@ -86,11 +92,10 @@ hyperExp(3)
 
 // PROBLEM 5
 
-
 // PROBLEM 9
 def fib(n: Int): Int = {
-  if(isZero(n)) 0
-  else if(isZero(dec(n))) 1
+  if (isZero(n)) 0
+  else if (isZero(dec(n))) 1
   else add(fib(dec(n)), fib(dec(dec(n))))
 }
 
@@ -99,8 +104,8 @@ fib(8)
 
 def fibTail(n: Int): Int = {
   def helper(a: Int, b: Int, n: Int): Int = {
-    if(isZero(n)) a
-    else if(isZero(dec(n))) b
+    if (isZero(n)) a
+    else if (isZero(dec(n))) b
     else helper(b, addTail(a, b), dec(n))
   }
 
@@ -109,3 +114,14 @@ def fibTail(n: Int): Int = {
 
 fibTail(3)
 fibTail(8)
+
+// PROBLEM 10
+def choose(m: Int, n: Int): Int = {
+  if (m < n) throw new IllegalArgumentException("m must be greater than n")
+  else if (m == n || isZero(n)) 1
+  else add(choose(dec(m), dec(n)), choose(dec(m), n))
+}
+
+choose(3, 2)
+choose(5, 1)
+choose(10, 7)
