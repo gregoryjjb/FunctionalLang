@@ -27,9 +27,15 @@ var myArr = Array(1, 4, -5, -3, 2)
 countPass(myArr, (e: Int) => e > 0)
 
 // PROBLEM 4
-//def recur(base: Int, combiner: (Int, Int) => Int): Int => Int = {
-//  (Int: n) => if(n == 0) base else combiner()
-//}
+def recur(base: Int, combiner: (Int, Int) => Int): Int => Int = {
+  def f(n: Int): Int = {
+    if (n == 0) base
+    else f(combiner(n, n - 1))
+  }
+  f
+}
+
+//recur(0, (a, b) => a - b)(5)
 
 // PROBLEM 5
 def deOptionize[T, U](f: T => Option[U]): T => U = {
@@ -70,4 +76,11 @@ multiThingFunc(5, "hi", (s: String) => { s.concat(" :) ") })
 multiThingFunc(7, 3, (i: Int) => { i + 1 })
 
 // PROBLEM 7
+def test[T](pairs: Array[(T, T)], f: T => T): Int = {
+  pairs.foldLeft(0)((acc, el) => if(f(el._1) != el._2) acc + 1 else acc)
+}
 
+test[Double](
+  Array((0.0, 0.0), (1.0, 1.0), (2.0, 4.0), (3.0, 9.0), (4.0, 15.0), (5.0, 25.0)),
+  n => n * n
+)

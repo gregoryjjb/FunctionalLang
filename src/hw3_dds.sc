@@ -16,12 +16,12 @@ def controlLoop[S](
 controlLoop[Int](
   1,
   0,
-  (state, cycle) => state > 100000,
-  (state, cycle) => state * 2,
+  (state, _) => state > 100000,
+  (state, _) => state * 2,
 )
 
 // PROBLEM 3
-def solve(f: Double => Double) = {
+def solve(f: Double => Double): Double = {
   val delta = 1e-9
   def df(x: Double) = (f(x + delta) - f(x)) / delta
   controlLoop[Double](
@@ -46,3 +46,22 @@ cubeRoot(8)
 def nthRoot(x: Double, n: Int) = solve((y: Double) => math.pow(y, n) - x)
 
 nthRoot(16, 4)
+
+// PROBLEM 7
+def compInterest(n: Double, r: Double): Double = {
+  controlLoop[Double](
+    n,
+    0,
+    (_, cycle) => cycle >= 12,
+    (state, _) => (state + state * r / 12)
+  )
+}
+
+compInterest(1.00, 1.00)
+
+def compInterestTail(balance: Double, rate: Double, months: Int): Double = {
+  if(months == 0) balance
+  else compInterestTail(balance + balance * (rate / 12), rate, months - 1)
+}
+
+compInterestTail(1.00, 1.00, 12)
