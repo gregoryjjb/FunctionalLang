@@ -30,12 +30,12 @@ countPass(myArr, (e: Int) => e > 0)
 def recur(base: Int, combiner: (Int, Int) => Int): Int => Int = {
   def f(n: Int): Int = {
     if (n == 0) base
-    else f(combiner(n, n - 1))
+    else combiner(n, f(n - 1))
   }
   f
 }
 
-//recur(0, (a, b) => a - b)(5)
+recur(1, (a, b) => a * b)(5)
 
 // PROBLEM 5
 def deOptionize[T, U](f: T => Option[U]): T => U = {
