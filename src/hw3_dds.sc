@@ -53,7 +53,7 @@ def compInterest(n: Double, r: Double): Double = {
     n,
     0,
     (_, cycle) => cycle >= 12,
-    (state, _) => (state + state * r / 12)
+    (state, _) => state + state * r / 12
   )
 }
 

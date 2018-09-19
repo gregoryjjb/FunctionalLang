@@ -53,7 +53,7 @@ def parseDigits(digits: String): Option[Int] =
 
 deOptionize(parseDigits)("123")
 
-// IN CLASS
+// IN CLASS PROBLEMS
 
 // PROBLEM 6
 def multiThing[T](n: Int, start: T, callback: T => T): T = {
