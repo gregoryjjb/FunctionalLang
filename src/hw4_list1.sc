@@ -119,6 +119,8 @@ val list3 = List(List(List(1, 2, List(3))))
 depth(list3)
 depth(List())
 
+depth(List(3,List(4)))
+
 /****************************************
   * Problem 6: numPass
   ***************************************/
