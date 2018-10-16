@@ -13,7 +13,7 @@ abstract class Character(val name: String) {
 class Dragon(name: String) extends Character(name) {
   def attack(victim: Knight) = {
     println(name + " is flaming " + victim.name)
-    val dmg: Double = Math.floor(Math.random() * health)
+    val dmg: Double = Math.floor(Dungeon.random.nextFloat() * health)
     victim.health = Math.max(0, victim.health - dmg.toInt)
   }
 }
@@ -21,7 +21,7 @@ class Dragon(name: String) extends Character(name) {
 class Knight(name: String) extends Character(name) {
   def attack(victim: Dragon) = {
     println(name + " is stabbing " + victim.name)
-    val dmg: Double = Math.floor(Math.random() * health)
+    val dmg: Double = Math.floor(Dungeon.random.nextFloat() * health)
     victim.health = Math.max(0, victim.health - dmg.toInt)
   }
 }
@@ -99,17 +99,16 @@ object Description {
   def apply(text: String, price: Int, supplier: String): Description = new Description(text, price, supplier)
 }
 
-class Item(val description: Description, val id: Int) {
+class Item(val description: Description) {
+  val id = Item.nextId
+  Item.nextId += 1
+
   override def toString: String = id + " - " + description.text
 }
 
 object Item {
   var nextId: Int = 0
-  def apply[T](description: Description): Item = {
-    val item = new Item(description, nextId)
-    nextId += 1
-    item
-  }
+  def apply[T](description: Description): Item = new Item(description)
 }
 
 object Indus {
