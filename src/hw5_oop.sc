@@ -190,14 +190,14 @@ class CelsiusTherm {
   def computeTemp(city: String) = 50 * math.random
 }
 
-class ThermAdapter extends CelsiusTherm with IThermometer {
+class AdapterTherm extends CelsiusTherm with IThermometer {
   override def getMeanTemperature(cities: List[String]): Double = {
     cities.map(computeTemp).sum / cities.length
   }
 }
 
 object WeatherStation extends App {
-  val thermometer: IThermometer = new ThermAdapter
+  val thermometer: IThermometer = new AdapterTherm
   val avgTemp = thermometer.getMeanTemperature(List("LA", "SF", "SLC", "Rio"))
   println("avg temp = " + avgTemp)
 }
