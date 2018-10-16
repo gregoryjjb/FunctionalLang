@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FunctionalLang.iml" filepath="$PROJECT_DIR$/FunctionalLang.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ScalaLabs.iml" filepath="$PROJECT_DIR$/ScalaLabs.iml" />
     </modules>
   </component>
 </project>
