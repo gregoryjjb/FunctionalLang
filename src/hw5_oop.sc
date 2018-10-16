@@ -38,8 +38,6 @@ object Dungeon {
       println("Thor's health is " + thor.health)
       println("Puff's health is " + puff.health)
     }
-    println("Thor's health is " + thor.health)
-    println("Puff's health is " + puff.health)
   }
 }
 
@@ -84,6 +82,7 @@ object Queue {
 }
 
 var waitingList = Queue(Array("Sam", "Chris", "Mark", "Luke", "Jessica"))
+waitingList.enqueue("Bob")
 println(waitingList)
 while(!waitingList.isEmpty) {
   println(waitingList.dequeue())
@@ -117,7 +116,7 @@ object Indus {
   var inventory = Map.empty[Description, Int]
 
   def rightPad(s: String, n: Int): String = {
-    var padded = s;
+    var padded = s
     while(padded.length < n) padded = padded + " "
     padded
   }
@@ -153,7 +152,6 @@ abstract class Expression {
 
 class Sum(val op1: Expression, val op2: Expression) extends Expression {
   override def execute: Double = op1.execute + op2.execute
-
   override def toString: String = "(+ " + op1 + " " + op2 + ")"
 }
 object Sum {
@@ -162,7 +160,6 @@ object Sum {
 
 class Product(val op1: Expression, val op2: Expression) extends Expression {
   override def execute: Double = op1.execute * op2.execute
-
   override def toString: String = "(* " + op1 + " " + op2 + ")"
 }
 object Product {
@@ -171,7 +168,6 @@ object Product {
 
 class Number(val value: Double) extends Expression {
   override def execute: Double = value
-
   override def toString: String = value.toString
 }
 object Number {
@@ -187,13 +183,11 @@ println("the value of " + exp + " = " + exp.execute)
 // PROBLEM 5
 
 trait IThermometer {
-  // = avg degrees Farenheit
   def getMeanTemperature(cities: List[String]): Double
 }
 
 class CelsiusTherm {
-  // = degrees Celsius
-  def computeTemp(city: String) = 50 * math.random // fake temperature for now
+  def computeTemp(city: String) = 50 * math.random
 }
 
 class ThermAdapter extends CelsiusTherm with IThermometer {
