@@ -73,6 +73,7 @@ gradle-app.setting
 
 # Package Files #
 *.jar
+!libraries/*.jar
 *.war
 *.ear
 
@@ -87,7 +88,7 @@ hs_err_pid*
 # sbt specific
 .cache
 .history
-# .lib/
+.lib/
 dist/*
 target/
 lib_managed/
