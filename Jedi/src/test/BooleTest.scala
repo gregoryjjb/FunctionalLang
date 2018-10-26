@@ -9,3 +9,13 @@ object BooleTest extends App {
   println("t || f = " + (t || f))
   println("!t = " + (!t))
 }
+
+/*
+Output of test run:
+
+t && f = false
+t || f = true
+!t = false
+
+Process finished with exit code 0
+ */
