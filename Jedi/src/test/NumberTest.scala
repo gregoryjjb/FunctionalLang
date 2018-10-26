@@ -21,3 +21,21 @@ object NumberTest1 extends App {
   println("r1 * i2 = " + (r1 * i2))
   println("i1 * r2 = " + (i1 * r2))
 }
+
+/*
+Output of test run:
+
+i1 * i2 = 42
+i1 == i2 = false
+i1 < i2 = false
+i1.## = 55
+-r1 = -3.14
+r1 * r2 = 8.5094
+r1 == r2 = false
+r1 < r2 = false
+r1.## = 1565118
+r1 * i2 = 18.84
+i1 * r2 = 18.97
+
+Process finished with exit code 0
+ */

@@ -16,5 +16,15 @@ object CharsTest extends App {
 
   println(s1 + " < " + s3 + " = " + (s1 < s3))
   println(s1 + " == " + s5 + " = " + (s1 == s5))
-
 }
+
+/*
+Output of test run:
+
+s4 = California...Dreaming
+iforn
+California < Dreaming = true
+California == California = true
+
+Process finished with exit code 0
+ */

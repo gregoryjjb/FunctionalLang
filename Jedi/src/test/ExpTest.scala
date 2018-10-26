@@ -12,3 +12,12 @@ object ExpTest extends App {
   println(pi.execute(globalEnv))
   println(num.execute(globalEnv))
 }
+
+/*
+Output of test run:
+
+3.14
+3.14
+
+Process finished with exit code 0
+ */
