@@ -44,14 +44,14 @@ class Jedi1Parsers extends RegexParsers {
   // Equality ::= inequality ~ ("==" ~ inequality)*
   def equality: Parser[Expression] = inequality ~ rep("==" ~> inequality) ^^ {
     case con ~ Nil  => con
-    case con ~ more => FunCall(Identifier("equals"), con :: more)
+    case con ~ cons => FunCall(Identifier("equals"), con :: cons)
   }
 
   // Inequality ::= sum ~ (("<" | ">" | "!=") ~ sum)?
   def inequality: Parser[Expression] = sum ~ opt(("<" | ">" | "!=") ~ sum) ^^ {
     case sum ~ None => sum
-    case sum ~ Some("<" ~ sum2)  => FunCall(Identifier("less"), List(sum, sum2))
     case sum ~ Some(">" ~ sum2)  => FunCall(Identifier("more"), List(sum, sum2))
+    case sum ~ Some("<" ~ sum2)  => FunCall(Identifier("less"), List(sum, sum2))
     case sum ~ Some("!=" ~ sum2) => FunCall(Identifier("unequals"), List(sum, sum2))
   }
 
@@ -112,9 +112,9 @@ class Jedi1Parsers extends RegexParsers {
   }
 
   // Operands ::= "(" ~ (expression ~ ("," ~ expression)*)? ~ ")"
-  def operands: Parser[List[Expression]] = "(" ~ opt(expression ~ rep("," ~ expression)) ~ ")" ^^ {
-    case _~Some(exp ~ Nil)~_ => List(exp)
-    case _~Some(exp ~ rest)~_ => exp :: rest.map(f => f._2)
-    case _ => List()
+  def operands: Parser[List[Expression]] = "(" ~> opt(expression ~ rep("," ~> expression)) <~ ")" ^^ {
+    case Some(first ~ Nil) => List(first)
+    case Some(first ~ rest) => first :: rest
+    case None => List()
   }
 }
