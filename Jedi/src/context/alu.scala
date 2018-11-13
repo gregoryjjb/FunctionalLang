@@ -153,7 +153,7 @@ object alu {
     else throw new TypeException("not expects a Boole")
   }
 
-  def write(vals: List[Value]): Value = { println(vals.head; Notification.DONE }
+  def write(vals: List[Value]): Value = { println(vals.head); Notification.DONE }
   def read(vals: List[Value]): Value = { val result = io.StdIn.readDouble(); Real(result)}
   def prompt(vals: List[Value]): Value = { print("=> "); Notification.DONE }
 
