@@ -10,6 +10,8 @@ case class FunCall(name: Identifier, args: List[Expression]) extends Expression 
 
     if(env.contains(name) && env.apply(name).isInstanceOf[Closure]) {
       // The function is in the environment
+      val closure = env.apply(name).asInstanceOf[Closure]
+      closure.apply(args.map(_.execute(env)))
     }
     else {
       alu.execute(name, args.map(arg => arg.execute(env)))

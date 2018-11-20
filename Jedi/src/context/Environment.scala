@@ -7,16 +7,16 @@ class Environment(var parent: Environment = null) extends collection.mutable.Has
   // used by closures to bind parameters to arguments
   def bulkPut(params: List[Identifier], args: List[Value]) {
     if (params.length != args.length) throw new TypeException("# arguments != #parameters")
-    for(i <- 0 until params.length) this.put(params(i), args(i))
+    for(i <- params.indices) this.put(params(i), args(i))
   }
 
   override def apply(name: Identifier): Value = {
-    if (this.contains(name)) super.apply(name)
+    if (super.contains(name)) super.apply(name)
     else if (parent != null) parent.apply(name)
     else throw new UndefinedException(name)
   }
 
-  override def contains(name: Identifier): Boolean => {
-
+  override def contains(name: Identifier): Boolean = {
+    super.contains(name) || (parent != null && parent.contains(name))
   }
 }
