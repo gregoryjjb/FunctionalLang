@@ -138,7 +138,7 @@ object alu {
   }
 
   private def equals(args: List[Value]): Value = {
-    if (args.length  != 2) throw new TypeException("equals expects two inputs")
+    //if (args.length  != 2) throw new TypeException("equals expects two inputs")
     Boole(args.forall(_ == args.head))
   }
 
