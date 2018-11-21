@@ -23,8 +23,12 @@ class Jedi2Parsers extends Jedi1Parsers {
 
   // lambda parser
   // lambda ::= "lambda" ~ params ~ expression
-  def lambda: Parser[Lambda] = "lam" ~> params ~ expression ^^ {
+  def lambda: Parser[Lambda] = "lambda" ~> params ~ expression ^^ {
     case p ~ e => Lambda(p, e)
+  }
+
+  def arrowLambda: Parser[Lambda] = params ~ "=>" ~ expression ^^ {
+    case p ~ "=>" ~ e => Lambda(p, e)
   }
 
   // block parser
@@ -38,5 +42,5 @@ class Jedi2Parsers extends Jedi1Parsers {
 
   // override of term parser
   //override def term: Parser[Expression]  = lambda | funCall | block | literal | "("~>expression<~")"
-  override def term: Parser[Expression]  = lambda | funCall | block | literal | "("~>expression<~")"
+  override def term: Parser[Expression]  = lambda | arrowLambda | funCall | block | literal | "("~>expression<~")"
 }
