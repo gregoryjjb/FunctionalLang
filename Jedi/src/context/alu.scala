@@ -3,6 +3,8 @@ package context
 import expression._
 import value._
 
+import scala.collection.mutable.ArrayBuffer
+
 /*
  * Notes:
  * alu implements all low-level arithmetic, logic, and I/O functions
@@ -26,6 +28,18 @@ object alu {
       case "write" => write(args)
       case "prompt" => prompt(args)
       case "read" => read(args)
+      case "dereference" => dereference(args)
+      case "var" => makeVar(args)
+      // store ops
+      case "store" => store(args)
+      case "put" => put(args)
+      case "rem" => rem(args)
+      case "contains" => contains(args)
+      case "map" => map(args)
+      case "filter" => filter(args)
+      case "get" => get(args)
+      case "addLast" => addLast(args)
+      case "size" => size(args)
       case _ => throw new UndefinedException(opcode)
     }
   }
@@ -159,4 +173,84 @@ object alu {
 
 
   // etc.
+
+  // variable ops
+
+  // returns the content of args(0)
+  private def dereference(args: List[Value]) = {
+    if(args.isEmpty) throw new TypeException("Nothing to dereference")
+    args.head.asInstanceOf[Variable].value
+  }
+
+  // creates a new variable containing args(0)
+  private def makeVar(args: List[Value]) = {
+    if(args.isEmpty) throw new TypeException("Could not create variable")
+    Variable(args.head)
+  }
+
+  // store ops
+
+  // returns a new store containing args
+  private def store(args: List[Value]) = {
+    Store(args.to[ArrayBuffer])
+  }
+
+  // put(v: Value, p: Integer, s: Store) calls s.put(v, p)
+  private def put(args: List[Value]) = {
+    if (args.size != 3 || !args(1).isInstanceOf[Integer] || !args(2).isInstanceOf[Store])
+      throw new TypeException("expected signature: put(v: Value, p: Integer, s: Store)")
+    args(2).asInstanceOf[Store].put(args(0), args(1).asInstanceOf[Integer])
+    Notification.DONE
+  }
+
+  // rem(p: Integer, s: Store) calls s.rem(p)
+  private def rem(args: List[Value]) = {
+    if (args.size != 2 || !args(0).isInstanceOf[Integer] || !args(1).isInstanceOf[Store])
+      throw new TypeException("expected signature: rem( p: Integer, s: Store)")
+    args(1).asInstanceOf[Store].rem(args(0).asInstanceOf[Integer])
+    Notification.DONE
+  }
+
+  // get(p: Integer, s: Store) calls s.get(p)
+  private def get(args: List[Value]) = {
+    if (args.size != 2 || !args(0).isInstanceOf[Integer] || !args(1).isInstanceOf[Store])
+      throw new TypeException("expected signature: rem( p: Integer, s: Store)")
+    args(1).asInstanceOf[Store].get(args(0).asInstanceOf[Integer])
+  }
+
+  // map(f: Closure, s: Store) calls s.map(f)
+  private def map(args: List[Value]) = {
+    if (args.size != 2 || !args(0).isInstanceOf[Closure] || !args(1).isInstanceOf[Store])
+      throw new TypeException("expected signature: rem( f: Closure, s: Store)")
+    args(1).asInstanceOf[Store].map(args(0).asInstanceOf[Closure])
+  }
+
+  // filter(f: Closure, s: Store) calls s.filter(f)
+  private def filter(args: List[Value]) = {
+    if (args.size != 2 || !args(0).isInstanceOf[Closure] || !args(1).isInstanceOf[Store])
+      throw new TypeException("expected signature: rem( f: Closure, s: Store)")
+    args(1).asInstanceOf[Store].filter(args(0).asInstanceOf[Closure])
+  }
+
+  // contains(v: Value, s: Store) calls s.contains(v)
+  private def contains(args: List[Value]) = {
+    if (args.size != 2 || !args(0).isInstanceOf[Value] || !args(1).isInstanceOf[Store])
+      throw new TypeException("expected signature: rem( v: Value, s: Store)")
+    args(1).asInstanceOf[Store].contains(args(0))
+  }
+
+  // addLast(v: Value, s: Store) calls s.add(v)
+  private def addLast(args: List[Value]) = {
+    if (args.size != 2 || !args(0).isInstanceOf[Value] || !args(1).isInstanceOf[Store])
+      throw new TypeException("expected signature: rem( v: Value, s: Store)")
+    args(1).asInstanceOf[Store].add(args(0))
+    Notification.DONE
+  }
+
+  // size(s: Store) calls s.size
+  private def size(args: List[Value]) = {
+    if (args.size != 1 || !args(0).isInstanceOf[Store])
+      throw new TypeException("expected signature: rem( s: Store)")
+    args(0).asInstanceOf[Store].size
+  }
 }
