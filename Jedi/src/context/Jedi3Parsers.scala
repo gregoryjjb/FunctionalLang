@@ -23,5 +23,5 @@ class Jedi3Parsers extends Jedi2Parsers {
 
 
   override def expression: Parser[Expression] = declaration | conditional | iteration | disjunction | failure("Invalid expression")
-  override def term: Parser[Expression]  = lambda | funCall | block | assignment | dereference | literal | "("~>expression<~")"
+  override def term: Parser[Expression]  = lambda | thunk | text | funCall | block | assignment | dereference | literal | "("~>expression<~")"
 }

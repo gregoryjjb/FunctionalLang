@@ -8,7 +8,7 @@ package value
 import context._
 import expression._
 
-case class Closure(params: List[Identifier], body: Expression, defEnv: Environment) extends Value {
+class Closure(params: List[Identifier], body: Expression, defEnv: Environment) extends Value {
 
   def apply(args: List[Value]): Value = {
     if(args.length != params.length) throw new JediException("Wrong number of arguments")
