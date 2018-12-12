@@ -7,10 +7,17 @@ case class Iteration(condition: Expression, body: Expression) extends SpecialFor
   override def execute(env: Environment): Value = {
     var result: Value = Notification.OK
     var condVal = condition.execute(env)
+    var break = false
 
-    while(condVal.isInstanceOf[Boole] && condVal.asInstanceOf[Boole].value) {
-      result = body.execute(env)
-      condVal = condition.execute(env)
+    while(!break && condVal.isInstanceOf[Boole] && condVal.asInstanceOf[Boole].value) {
+      try {
+        result = body.execute(env)
+        condVal = condition.execute(env)
+      }
+      catch {
+        case be: BreakException => break = true
+        case e: Exception => throw e
+      }
     }
 
     if(!condVal.isInstanceOf[Boole]) throw new TypeException("While loops need Booles")

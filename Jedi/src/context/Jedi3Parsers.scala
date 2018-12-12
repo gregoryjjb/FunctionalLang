@@ -21,7 +21,8 @@ class Jedi3Parsers extends Jedi2Parsers {
     case e => FunCall(Identifier("dereference"), List(e))
   }
 
+  def break: Parser[Break] = "break" ^^ (_ => Break())
 
-  override def expression: Parser[Expression] = declaration | conditional | iteration | disjunction | failure("Invalid expression")
+  override def expression: Parser[Expression] = break | declaration | conditional | iteration | disjunction | failure("Invalid expression")
   override def term: Parser[Expression]  = lambda | thunk | text | funCall | block | assignment | dereference | literal | "("~>expression<~")"
 }

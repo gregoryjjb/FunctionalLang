@@ -1,0 +1,98 @@
+                     Final Exam Solutions for Greg Brisebois
+
+===========================
+Problem 1
+
+   turned in as an image (JPEG, GIF, etc)
+   
+===========================
+Problem 2
+
+A Jedi implementation of countRoots:
+
+def countRoots = lambda(n, f) {
+  def i = var(0);
+  def count = var(0);
+  while([i] < n) {
+    if(f([i]) == 0) count = [count] + 1;
+	i = [i] + 1
+  };
+  [count]
+}
+
+
+===========================
+Problem 3, Scala implementation of logProcessor
+
+def logProcessor(log: List[Entry]): List[Entry] = {
+  log
+    .filter(el => el.hour < 17)
+    .map(el => Entry(el.hour, (el.temp * 1.8) + 32))
+}
+
+
+===========================
+Problem 4
+
+Part A 
+
+Implementation of Break class:
+
+case class Break() extends SpecialForm {
+  override def execute(env: Environment): Value = {
+    throw new BreakException()
+  }
+}
+
+
+Implementation of BreakException:
+
+class BreakException extends JediException("Break")
+
+
+Implementation of break parser:
+
+def break: Parser[Break] = "break" ^^ (_ => Break())
+
+
+Part B, Implementation of Iteration:
+
+case class Iteration(condition: Expression, body: Expression) extends SpecialForm {
+  override def execute(env: Environment): Value = {
+    var result: Value = Notification.OK
+    var condVal = condition.execute(env)
+    var break = false
+
+    while(!break && condVal.isInstanceOf[Boole] && condVal.asInstanceOf[Boole].value) {
+      try {
+        result = body.execute(env)
+        condVal = condition.execute(env)
+      }
+      catch {
+        case be: BreakException => break = true
+        case e: Exception => throw e
+      }
+    }
+
+    if(!condVal.isInstanceOf[Boole]) throw new TypeException("While loops need Booles")
+
+    result
+  }
+}
+
+
+===========================
+Problem 5
+
+Rules for matches(X, opt(A)):
+
+matches(_, opt(_)).
+
+
+Rules for matches(X, rep(A)):
+
+matches("", rep(_)).
+matches(X, rep(A)) :- string_concat(Pre, Suf, X), matches(Pre, A), matches(Suf, rep(A)).
+
+
+===========================
